@@ -53,18 +53,40 @@
         static function getAll()
         {
             $returned_copies = $GLOBALS['DB']->query("SELECT * FROM copies;");
-            $books = array();
+            $copies = array();
             foreach($returned_copies as $copy) {
-
-                
-                $description = $copy['description'];
-                $id = $copy['id'];
-                $category_id = $copy['category_id'];
+                $book_id = $copy['book_id'];
+                $count = $copy['count'];
                 $due_date = $copy['due_date'];
-                $new_task = new Task($description, $id, $category_id, $due_date);
-                array_push($tasks, $new_task);
+                $id = $copy['id'];
+                $new_copy = new Copy($book_id, $count, $due_date, $id);
+                array_push($copies, $new_copy);
             }
-            return $tasks;
+            return $copies;
+        }
+
+        static function deleteAll()
+        {
+            $GLOBALS['DB']->exec("DELETE FROM copies;");
+        }
+
+        static function find($search_id)
+        {
+            $found_copy = NULL;
+            $copies = Copy::getAll();
+            foreach($copies as $copy) {
+                $copy_id = $copy->getId();
+                if ($copy_id == $search_id) {
+                    $found_copy = $copy;
+                }
+            }
+            return $found_copy;
+        }
+
+        function update($new_due_date)
+        {
+            $GLOBALS['DB']->exec("UPDATE copies SET due_date = '{$new_due_date}' WHERE id = {$this->getId()};");
+            $this->setDueDate($new_due_date);
         }
     }
 
