@@ -27,7 +27,7 @@
 
         function save()
         {
-            $GLOBALS['DB']->exec("INSERT INTO books (title) VALUES ('{$this->gettitle()}');");
+            $GLOBALS['DB']->exec("INSERT INTO books (title) VALUES ('{$this->getTitle()}');");
             $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
@@ -84,9 +84,9 @@
                 $result = $GLOBALS['DB']->query("SELECT * FROM authors WHERE id = {$author_id};");
                 $returned_author = $result->fetchAll(PDO::FETCH_ASSOC);
 
-                $title = $returned_author[0]['title'];
+                $name = $returned_author[0]['name'];
                 $id = $returned_author[0]['id'];
-                $new_author = new Author($title, $id);
+                $new_author = new Author($name, $id);
                 array_push($authors, $new_author);
             }
             return $authors;
@@ -97,4 +97,5 @@
             $GLOBALS['DB']->exec("DELETE FROM books WHERE id = {$this->getId()};");
             $GLOBALS['DB']->exec("DELETE FROM authors_books WHERE book_id = {$this->getId()};");
         }
+    }
 ?>

@@ -81,9 +81,9 @@
                 $book_id = $id['book_id'];
                 $result = $GLOBALS['DB']->query("SELECT * FROM books WHERE id = {$book_id};");
                 $returned_book = $result->fetchAll(PDO::FETCH_ASSOC);
-                $name = $returned_book[0]['name'];
+                $title = $returned_book[0]['title'];
                 $id = $returned_book[0]['id'];
-                $new_book = new Task($name, $id);
+                $new_book = new Book($title, $id);
                 array_push($books, $new_book);
             }
             return $books;

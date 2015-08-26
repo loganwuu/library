@@ -115,7 +115,7 @@
             $test_book2->save();
 
             //Act
-            Book:deleteALl();
+            Book::deleteALl();
 
             //Assert
             $result = Book::getAll();
@@ -129,12 +129,13 @@
             $id = 1;
             $test_book = new Book($title, $id);
             $test_book->save();
-
+            
             //Act
             $result = $test_book->getId();
 
             //Assert
-            $this->assertEquals(1, $result);
+            $this->assertEquals(true, is_numeric($result));
+
         }
 
         function testDeleteBook()
@@ -189,7 +190,7 @@
             $test_book->save();
 
             //Assert
-            $this->assertEquals(true, is_numberic($test_book->getId()));
+            $this->assertEquals(true, is_numeric($test_book->getId()));
         }
 
         function testAddAuthor()
