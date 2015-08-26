@@ -99,6 +99,7 @@
             $this->assertEquals([], $result);
         }
 
+//Not working as now
         function testAddCheckoutCopy()
         {
             //Arrange
@@ -122,6 +123,7 @@
             $this->assertEquals($test_copy->getPatrons(), [$test_patron]);
         }
 
+//Not working as now
         function testGetPatrons()
         {
             //Arrange
