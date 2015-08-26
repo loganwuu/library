@@ -88,6 +88,26 @@
             }
             return $books;
         }
+
+        static function search($search_name)
+        {
+            $found_authors = array();
+            $authors = Author::getAll();
+            foreach($authors as $author) {
+                $author_name = $author->getName();
+                if($author_name == $search_name) {
+                    array_push($found_authors, $author);
+                }
+            }
+
+            $found_books = array();
+            foreach($found_authors as $author) {
+                $books = $author->getBooks();
+                array_push($found_books, $book);
+            }
+            return $found_books;
+        }
+
         function delete()
         {
             $GLOBALS['DB']->exec("DELETE FROM authors WHERE id = {$this->getId()};");
