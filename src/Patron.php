@@ -68,39 +68,30 @@
             return $found_patron;
         }
 
-        function addCheckout($checkout)
-        {
-            $GLOBALS['DB']->exec("INSERT INTO checkouts (copy_id, patron_id, due_date) VALUES ({$checkout->getCopyId()}, {$this->getId()}, '{$checkout->getDueDate()}');");
-        }
+        // function addCheckout($checkout)
+        // {
+        //     $GLOBALS['DB']->exec("INSERT INTO checkouts (copy_id, patron_id, due_date) VALUES ({$checkout->getCopyId()}, {$this->getId()}, '{$checkout->getDueDate()}');");
+        //     $checkout->setId($GLOBALS['DB']->lastInsertId());
+        // }
 
         function getCheckouts()
         {
-            $returned_checkouts = $GLOBALS['DB']->query("SELECT * FROM checkouts WHERE patron_id = {$this->getId()}");
+            $returned_checkouts = $GLOBALS['DB']->query("SELECT * FROM checkouts WHERE patron_id = {$this->getId()};");
+
+            //var_dump($returned_checkouts);
             $checkouts = array();
 
             foreach($returned_checkouts as $checkout) {
+
                 $copy_id = $checkout['copy_id'];
                 $patron_id = $checkout['patron_id'];
                 $id = $checkout['id'];
                 $due_date = $checkout['due_date'];
-                $new_checkout = new Checkout($copy_id, $patron_id, $id, $due_date);
+                $new_checkout = new Checkout($copy_id, $patron_id, $due_date, $id);
                 array_push($checkouts, $new_checkout);
             }
             return $checkouts;
-            // $query = $GLOBALS['DB']->query("SELECT copies.* FROM patrons
-            //     JOIN checkouts ON (patrons.id = checkouts.patron_id)
-            //     JOIN copies ON (checkouts.copy_id = copies.id)
-            //     WHERE patrons.id = {$this->getId()};");
-            // $copies = $query->fetchAll(PDO::FETCH_ASSOC);
-            // $copies_array = array();
-            //
-            // foreach($copies as $copy) {;
-            //     $book_id = $copy['book_id'];
-            //     $id = $copy['id'];
-            //     $new_copy = new Copy($book_id, $id);
-            //     array_push($copies_array, $new_copy);
-            // }
-            // return $copies_array;
+
         }
 
        function delete()

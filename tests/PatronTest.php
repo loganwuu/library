@@ -95,32 +95,32 @@
             $this->assertEquals($test_patron2, $result);
         }
 
-        function testAddCheckout()
-        {
-            //Arrange
-            $book_id = 1;
-            $id = 1;
-            $test_copy = new Copy($book_id, $id);
-            $test_copy->save();
-
-            $name = "Jim Bob";
-            $id = 1;
-            $test_patron = new Patron($name, $id);
-            $test_patron->save();
-
-            $copy_id = $test_copy->getId();
-            $patron_id = $test_patron->getId();
-            $id = null;
-            $due_date = "2015-09-20";
-            $test_checkout = new Checkout($copy_id, $patron_id, $id, $due_date);
-
-            //Act
-            $test_patron->addCheckout($test_checkout);
-
-            //Assert
-            $this->assertEquals(1,count($test_patron->getCheckouts()));
-
-        }
+        // function testAddCheckout()
+        // {
+        //     //Arrange
+        //     $book_id = 1;
+        //     $id = 1;
+        //     $test_copy = new Copy($book_id, $id);
+        //     $test_copy->save();
+        //
+        //     $name = "Jim Bob";
+        //     $id = 1;
+        //     $test_patron = new Patron($name, $id);
+        //     $test_patron->save();
+        //
+        //     $copy_id = $test_copy->getId();
+        //     $patron_id = $test_patron->getId();
+        //     $id = null;
+        //     $due_date = "2015-09-20";
+        //     $test_checkout = new Checkout($copy_id, $patron_id, $id, $due_date);
+        //
+        //     //Act
+        //     $test_patron->addCheckout($test_checkout);
+        //
+        //     //Assert
+        //     $this->assertEquals(1,count($test_patron->getCheckouts()));
+        //
+        // }
 
         function testGetCheckouts()
         {
@@ -144,26 +144,30 @@
             $patron_id = $test_patron->getId();
             $id = null;
             $due_date = "2015-09-30";
-            $test_checkout = new Checkout($copy_id, $patron_id, $id, $due_date);
-
-            $copy_id2 = $test_copy2->getId();
-            $patron_id2 = $test_patron->getId();
-            $id2 = null;
-            $due_date2 = "2015-09-30";
-            $test_checkout2 = new Checkout($copy_id2, $patron_id2, $id2, $due_date2);
+            $test_checkout = new Checkout($copy_id, $patron_id, $due_date, $id);
+            $test_checkout->save();
 
             // $copy_id2 = $test_copy2->getId();
             // $patron_id2 = $test_patron->getId();
             // $id2 = null;
-            // $due_date2 = "2015-09-31";
+            // $due_date2 = "2015-09-30";
             // $test_checkout2 = new Checkout($copy_id2, $patron_id2, $id2, $due_date2);
 
+            $copy_id2 = $test_copy2->getId();
+            $patron_id2 = $test_patron->getId();
+            $id2 = null;
+            $due_date2 = "2015-04-20";
+            $test_checkout2 = new Checkout($copy_id2, $patron_id2, $due_date2, $id2);
+            $test_checkout2->save();
+            // var_dump($test_checkout);
+            // var_dump($test_checkout2);
+
             //Act
-            $test_patron->addCheckout($test_checkout2);
-            $test_patron->addCheckout($test_checkout);
+            // $test_patron->addCheckout($test_checkout);
+            // $test_patron->addCheckout($test_checkout2);
 
             $result = $test_patron->getCheckouts();
-            var_dump($result);
+            // var_dump($result);
 
             //Assert
             $this->assertEquals(2,count($test_patron->getCheckouts()));

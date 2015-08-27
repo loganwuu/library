@@ -28,7 +28,7 @@
             $patron_id = 1;
             $id = 1;
             $due_date = '2015-10-10';
-            $test_checkout = new Checkout($copy_id, $patron_id, $id, $due_date);
+            $test_checkout = new Checkout($copy_id, $patron_id, $due_date, $id);
             $test_checkout->save();
 
             //Act

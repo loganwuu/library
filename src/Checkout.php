@@ -6,7 +6,7 @@
         private $id;
         private $due_date;
 
-        function __construct($copy_id, $patron_id, $id = null, $due_date) {
+        function __construct($copy_id, $patron_id, $due_date, $id = null) {
             $this->copy_id = $copy_id;
             $this->patron_id = $patron_id;
             $this->id = $id;
@@ -20,7 +20,6 @@
         function setId($new_id) {
             $this->id = $new_id;
         }
-
 
         function getCopyId() {
             return $this->copy_id;
@@ -47,7 +46,7 @@
         }
 
         function save() {
-            $GLOBALS['DB']->exec("INSERT INTO checkouts (copy_id, patron_id, due_date) VALUES ({$this->getCopyId()}, {$this->getPatronId()}, '{$this->getDueDate()}')");
+            $GLOBALS['DB']->exec("INSERT INTO checkouts (copy_id, patron_id, due_date) VALUES ({$this->getCopyId()}, {$this->getPatronId()}, '{$this->getDueDate()}');");
             $this->id = $GLOBALS['DB']->lastInsertId();
         }
 
@@ -59,7 +58,7 @@
                 $patron_id = $checkout['patron_id'];
                 $id = $checkout['id'];
                 $due_date = $checkout['due_date'];
-                $new_checkout = new Checkout($copy_id, $patron_id, $id, $due_date);
+                $new_checkout = new Checkout($copy_id, $patron_id, $due_date, $id);
                 array_push($checkouts, $new_checkout);
             }
             return $checkouts;
