@@ -57,6 +57,19 @@
             return $found_copy;
         }
 
+        static function findCopies($search_book_id)
+        {
+            $found_copies = array();
+            $copies = Copy::getAll();
+            foreach($copies as $copy) {
+                $book_id = $copy->getBookId();
+                if ($book_id == $search_book_id) {
+                    array_push($found_copies, $copy);
+                }
+            }
+            return $found_copies;
+        }
+
         // function addCheckoutCopy($patron, $due_date)
         // {
         //     $GLOBALS['DB']->exec("INSERT INTO checkouts (copy_id, patron_id, due_date) VALUES ({$this->getId()}, {$patron->getId()}), '{$this->getDueDate()}');");
@@ -83,6 +96,24 @@
         {
             $GLOBALS['DB']->exec("DELETE FROM copies WHERE id = {$this->getId()};");
             // $GLOBALS['DB']->exec("DELETE FROM checkouts WHERE copy_id = {$this->getId()};");
+        }
+        function getCheckouts() {
+
+            $query = $GLOBALS['DB']->query("SELECT patrons.* FROM copies
+                JOIN checkouts ON (copies.id = checkouts.copy_id)
+                JOIN patrons ON (checkouts.patron_id = patrons.id)
+                WHERE copies.id = {$this->getId()};");
+            $patrons = $query->fetchAll(PDO::FETCH_ASSOC);
+            $patrons_array = array();
+
+            foreach($patrons as $patron) {
+                $name = $patron['name'];
+                $id = $patron['id'];
+                $new_patron = new Patron($name, $id);
+                array_push($patrons_array, $new_patron);
+            }
+            return $patrons_array;
+
         }
     }
 
