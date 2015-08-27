@@ -68,32 +68,45 @@
             return $found_patron;
         }
 
-        function addCopy($copy)
+        function addCheckout($checkout)
         {
-            $GLOBALS['DB']->exec("INSERT INTO checkouts (copy_id, patron_id) VALUES ({$copy->getId()}, {$this->getId()});");
+            $GLOBALS['DB']->exec("INSERT INTO checkouts (copy_id, patron_id, due_date) VALUES ({$checkout->getCopyId()}, {$this->getId()}, '{$checkout->getDueDate()}');");
         }
 
-        function getCopies()
-       {
-           $query = $GLOBALS['DB']->query("SELECT copy_id FROM checkouts WHERE patron_id = {$this->getId()};");
-           $copy_ids = $query->fetchAll(PDO::FETCH_ASSOC);
-           $copies = array();
-           foreach($copy_ids as $id) {
-               $copy_id = $id['copy_id'];
-               $result = $GLOBALS['DB']->query("SELECT * FROM copies WHERE id = {$copy_id};");
-               $returned_copy = $result->fetchAll(PDO::FETCH_ASSOC);
-               $book_id = $returned_copy[0]['book_id'];
-               $id = $returned_copy[0]['id'];
-               $new_copy = new Copy($book_id, $id);
-               array_push($copies, $new_copy);
-           }
-           return $copies;
-       }
-       
+        function getCheckouts()
+        {
+            $returned_checkouts = $GLOBALS['DB']->query("SELECT * FROM checkouts WHERE patron_id = {$this->getId()}");
+            $checkouts = array();
+
+            foreach($returned_checkouts as $checkout) {
+                $copy_id = $checkout['copy_id'];
+                $patron_id = $checkout['patron_id'];
+                $id = $checkout['id'];
+                $due_date = $checkout['due_date'];
+                $new_checkout = new Checkout($copy_id, $patron_id, $id, $due_date);
+                array_push($checkouts, $new_checkout);
+            }
+            return $checkouts;
+            // $query = $GLOBALS['DB']->query("SELECT copies.* FROM patrons
+            //     JOIN checkouts ON (patrons.id = checkouts.patron_id)
+            //     JOIN copies ON (checkouts.copy_id = copies.id)
+            //     WHERE patrons.id = {$this->getId()};");
+            // $copies = $query->fetchAll(PDO::FETCH_ASSOC);
+            // $copies_array = array();
+            //
+            // foreach($copies as $copy) {;
+            //     $book_id = $copy['book_id'];
+            //     $id = $copy['id'];
+            //     $new_copy = new Copy($book_id, $id);
+            //     array_push($copies_array, $new_copy);
+            // }
+            // return $copies_array;
+        }
+
        function delete()
        {
            $GLOBALS['DB']->exec("DELETE FROM patrons WHERE id = {$this->getId()};");
-           $GLOBALS['DB']->exec("DELETE FROM checkouts WHERE patron_id = {$this->getId()};");
+           //$GLOBALS['DB']->exec("DELETE FROM checkouts WHERE patron_id = {$this->getId()};");
        }
    }
 ?>

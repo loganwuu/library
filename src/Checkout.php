@@ -13,9 +13,14 @@
             $this->due_date = $due_date;
         }
 
-        function setDueDate($copy_id) {
+        function setCopyId($copy_id) {
             $this->copy_id = $copy_id;
         }
+
+        function setId($new_id) {
+            $this->id = $new_id;
+        }
+
 
         function getCopyId() {
             return $this->copy_id;
@@ -54,7 +59,7 @@
                 $patron_id = $checkout['patron_id'];
                 $id = $checkout['id'];
                 $due_date = $checkout['due_date'];
-                $new_checkout = new Checkout($copy_id, $patron_id, $id, $due_date)
+                $new_checkout = new Checkout($copy_id, $patron_id, $id, $due_date);
                 array_push($checkouts, $new_checkout);
             }
             return $checkouts;
