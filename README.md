@@ -2,7 +2,7 @@
 
 ##### App for a library to keep track of checkouts. (8/26/15)
 
-#### Logan Wu & Don Schemmel
+#### Brian Borealis, Don Schemmel, Logan Wu & Steve Smietana
 
 ## Description
 
@@ -20,7 +20,7 @@ PHP, PHPUnit, Silex, Twig, and MySQL
 
 ### Legal
 
-Copyright (c) 2015 Logan Wu & Don Schemmel
+Copyright (c) 2015 **Brian Borealis, Don Schemmel, Logan Wu & Steve Smietana**
 
 This software is licensed under the MIT license.
 
