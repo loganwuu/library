@@ -68,32 +68,36 @@
             return $found_patron;
         }
 
-        function addCopy($copy)
+        // function addCheckout($checkout)
+        // {
+        //     $GLOBALS['DB']->exec("INSERT INTO checkouts (copy_id, patron_id, due_date) VALUES ({$checkout->getCopyId()}, {$this->getId()}, '{$checkout->getDueDate()}');");
+        //     $checkout->setId($GLOBALS['DB']->lastInsertId());
+        // }
+
+        function getCheckouts()
         {
-            $GLOBALS['DB']->exec("INSERT INTO checkouts (copy_id, patron_id) VALUES ({$copy->getId()}, {$this->getId()});");
+            $returned_checkouts = $GLOBALS['DB']->query("SELECT * FROM checkouts WHERE patron_id = {$this->getId()};");
+
+            //var_dump($returned_checkouts);
+            $checkouts = array();
+
+            foreach($returned_checkouts as $checkout) {
+
+                $copy_id = $checkout['copy_id'];
+                $patron_id = $checkout['patron_id'];
+                $id = $checkout['id'];
+                $due_date = $checkout['due_date'];
+                $new_checkout = new Checkout($copy_id, $patron_id, $due_date, $id);
+                array_push($checkouts, $new_checkout);
+            }
+            return $checkouts;
+
         }
 
-        function getCopies()
-       {
-           $query = $GLOBALS['DB']->query("SELECT copy_id FROM checkouts WHERE patron_id = {$this->getId()};");
-           $copy_ids = $query->fetchAll(PDO::FETCH_ASSOC);
-           $copies = array();
-           foreach($copy_ids as $id) {
-               $copy_id = $id['copy_id'];
-               $result = $GLOBALS['DB']->query("SELECT * FROM copies WHERE id = {$copy_id};");
-               $returned_copy = $result->fetchAll(PDO::FETCH_ASSOC);
-               $book_id = $returned_copy[0]['book_id'];
-               $id = $returned_copy[0]['id'];
-               $new_copy = new Copy($book_id, $id);
-               array_push($copies, $new_copy);
-           }
-           return $copies;
-       }
-       
        function delete()
        {
            $GLOBALS['DB']->exec("DELETE FROM patrons WHERE id = {$this->getId()};");
-           $GLOBALS['DB']->exec("DELETE FROM checkouts WHERE patron_id = {$this->getId()};");
+           //$GLOBALS['DB']->exec("DELETE FROM checkouts WHERE patron_id = {$this->getId()};");
        }
    }
 ?>

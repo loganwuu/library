@@ -1,0 +1,29 @@
+
+<html>
+    <head>
+        <title>Library Patrons</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Library Patrons</h1>
+
+
+            <form action="/patrons" method="post">
+                <input id="name" name="name" placeholder="Patron Name">
+                <button type="submit">Add Patron</button>
+            </form>
+
+            {% if patrons is not empty %}
+                <p>Patrons:</p>
+                <ul>
+                    {% for patron in patrons %}
+                        <li><a href="/patron/{{ patron.getId }}"> {{ patron.getName }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <a href="/">Home</a>
+
+        </div>
+    </body>
+</html>

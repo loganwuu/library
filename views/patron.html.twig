@@ -1,0 +1,27 @@
+
+<html>
+    <head>
+        <title>{{ patron.getName }}</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>{{ patron.getName }}</h1>
+
+                <form action="/patron/{{ patron.getId }}" method="post">
+                    <input name="_method" type="hidden" value="patch">
+                    <label for="name">Enter new name:</label>
+                    <input name="name" type="text">
+                    <button type="submit">Change name</button>
+                </form>
+
+                <form action="/patron/{{ patron.getId }}" method="post">
+                    <input name="_method" type="hidden" value="delete">
+                    <button type="submit">Delete Patron</button>
+                </form>
+
+                <a href="/">Home</a>
+
+        </div>
+    </body>
+</html>
